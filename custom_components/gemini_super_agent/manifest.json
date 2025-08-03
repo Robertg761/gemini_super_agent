@@ -1,7 +1,7 @@
 {
   "domain": "gemini_super_agent",
   "name": "Gemini Super Agent",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "documentation": "https://github.com/Robertg761/gemini_super_agent",
   "dependencies": [],
   "codeowners": ["@Robertg761"],
