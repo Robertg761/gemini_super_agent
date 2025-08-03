@@ -3,6 +3,7 @@ import aiohttp
 import yaml
 
 from homeassistant.core import HomeAssistant, ServiceCall
+from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.typing import ConfigType
 
 _LOGGER = logging.getLogger(__name__)
@@ -10,11 +11,14 @@ _LOGGER = logging.getLogger(__name__)
 DOMAIN = "gemini_super_agent"
 GEMINI_API_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key="
 
-async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
-    """Set up the Gemini Super Agent component."""
+async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+    """Set up Gemini Super Agent from a config entry."""
 
     async def handle_prompt(call: ServiceCall):
         """Handle the service call to generate content with Gemini."""
+        # Note: In a real config flow, the API key would be stored in the entry.data
+        # and retrieved here instead of being passed in the service call.
+        # For now, we'll keep the service call structure for simplicity.
         api_key = call.data.get("api_key")
         prompt = call.data.get("prompt")
 
@@ -59,8 +63,16 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
         except aiohttp.ClientError as e:
             _LOGGER.error(f"Network error calling Gemini API: {e}")
 
-
+    # Register the service
     hass.services.async_register(DOMAIN, "prompt", handle_prompt)
-    _LOGGER.info("Gemini Super Agent is set up and ready.")
+    _LOGGER.info("Gemini Super Agent service is registered.")
     
+    return True
+
+async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+    """Unload a config entry."""
+    # This is called when the integration is removed or reloaded.
+    # We remove the service that was registered.
+    hass.services.async_remove(DOMAIN, "prompt")
+    _LOGGER.info("Gemini Super Agent service unregistered.")
     return True
