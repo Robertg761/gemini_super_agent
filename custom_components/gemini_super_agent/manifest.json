@@ -1,11 +1,10 @@
 {
   "domain": "gemini_super_agent",
   "name": "Gemini Super Agent",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "documentation": "https://github.com/Robertg761/gemini_super_agent",
   "dependencies": [],
   "codeowners": ["@Robertg761"],
-  "requirements": ["google-generativeai>=0.8.5", "pyyaml>=6.0"],
   "config_flow": true,
   "integration_type": "service",
   "iot_class": "cloud_polling"
